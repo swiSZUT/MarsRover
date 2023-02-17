@@ -16,7 +16,10 @@ public class Landscape {
     }
 
     public void setSlope(int x, int y, int slope) {
-
+        grid[x][y] = slope;
     }
 
+    public int getSlope(int x, int y) {
+        return 0;
+    }
 }

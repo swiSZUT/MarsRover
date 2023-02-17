@@ -42,4 +42,18 @@ public class LandscapeTest {
         assertEquals(slope, grid[x][y]);
     }
 
+    @ParameterizedTest
+    @CsvSource({"-5, -10, 10", "-10, 40, -7", "150, 30, 45", "100, 100, -5"})
+    public void testSetSlopeExceptionWhenOutOfBounds(int x, int y, int slope) {
+        //Instantly green because exception is thrown by Array.
+        assertThrows(IndexOutOfBoundsException.class, () -> landscape.setSlope(x, y, slope));
+    }
+
+    @ParameterizedTest
+    @CsvSource({"1, 2, 3", "20, 15, -10", "0, 0, 50", "99, 99, -13"})
+    public void testGetSlope(int x, int y, int slope) {
+        landscape.setSlope(x, y, slope);
+        assertEquals(slope, landscape.getSlope(x, y));
+    }
+
 }
