@@ -1,5 +1,6 @@
 package de.szut;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -9,6 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class LandscapeTest {
 
     Landscape landscape;
+
+    @BeforeEach
+    public void setUp() {
+        landscape = new Landscape(100, 100);
+    }
 
     @ParameterizedTest
     @CsvSource({"100, 100", "50, 50", "100, 150", "2000, 1000"})
@@ -26,6 +32,14 @@ public class LandscapeTest {
     public void testInitLandscapeExceptionWhenSizeTooSmall(int x, int y) {
         Exception e = assertThrows(IllegalArgumentException.class, () -> new Landscape(x, y));
         assertEquals("Grid dimensions must be greater than 0.", e.getMessage());
+    }
+
+    @ParameterizedTest
+    @CsvSource({"1, 2, 3", "20, 15, -10", "0, 0, 50", "99, 99, -13"})
+    public void testSetSlope(int x, int y, int slope) {
+        landscape.setSlope(x, y, slope);
+        int[][] grid = landscape.getGrid();
+        assertEquals(slope, grid[x][y]);
     }
 
 }
