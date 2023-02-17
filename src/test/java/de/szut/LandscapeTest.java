@@ -14,9 +14,9 @@ public class LandscapeTest {
     public void testInitLandscape(int x, int y) {
         landscape = new Landscape(x, y);
         int[][] grid = landscape.getGrid();
-        assertEquals(grid.length, x);
+        assertEquals(x, grid.length);
         for (int i = 0; i < grid.length; i++) {
-            assertEquals(grid[i].length, y);
+            assertEquals(y, grid[i].length);
         }
     }
 
