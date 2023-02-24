@@ -20,6 +20,6 @@ public class Landscape {
     }
 
     public int getSlope(int x, int y) {
-        return 0;
+        return grid[x][y];
     }
 }

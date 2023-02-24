@@ -56,4 +56,11 @@ public class LandscapeTest {
         assertEquals(slope, landscape.getSlope(x, y));
     }
 
+    @ParameterizedTest
+    @CsvSource({"-5, -10", "-10, 40", "150, 30", "100, 100"})
+    public void testGetSlopeExceptionWhenOutOfBounds(int x, int y) {
+        //Instantly green because exception is thrown by Array.
+        assertThrows(IndexOutOfBoundsException.class, () -> landscape.getSlope(x, y));
+    }
+
 }
