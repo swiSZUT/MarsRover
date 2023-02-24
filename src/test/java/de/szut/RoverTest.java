@@ -25,9 +25,10 @@ public class RoverTest {
         int startY = 55;
         Orientation startOrientation = Orientation.NORTH;
         Rover rover = new Rover(mockLandscape, startX, startY, startOrientation);
-        assertEquals(rover.getX(), startX);
-        assertEquals(rover.getY(), startY);
-        assertEquals(rover.getOrientation(), startOrientation);
+        assertEquals(mockLandscape, rover.getLandscape());
+        assertEquals(startX, rover.getX());
+        assertEquals(startY, rover.getY());
+        assertEquals(startOrientation, rover.getOrientation());
     }
 
 }

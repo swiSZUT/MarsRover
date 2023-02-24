@@ -8,6 +8,10 @@ public class Rover {
 
     }
 
+    public Landscape getLandscape() {
+        return null;
+    }
+
     public int getX() {
         return 0;
     }
