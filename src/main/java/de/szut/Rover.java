@@ -4,23 +4,30 @@ import de.szut.enums.Orientation;
 
 public class Rover {
 
-    public Rover(Landscape landscape, int startX, int startY, Orientation startOrientation) {
+    private int xPos, yPos;
+    private Orientation orientation;
+    private Landscape landscape;
 
+    public Rover(Landscape landscape, int startX, int startY, Orientation startOrientation) {
+        this.landscape = landscape;
+        this.xPos = startX;
+        this.yPos = startY;
+        this.orientation = startOrientation;
     }
 
     public Landscape getLandscape() {
-        return null;
+        return this.landscape;
     }
 
     public int getX() {
-        return 0;
+        return this.xPos;
     }
 
     public int getY() {
-        return 0;
+        return this.yPos;
     }
 
     public Orientation getOrientation() {
-        return null;
+        return this.orientation;
     }
 }
