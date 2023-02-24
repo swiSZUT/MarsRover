@@ -11,6 +11,14 @@ public class Landscape {
         grid = new int[x][y];
     }
 
+    public int getWidth() {
+        return this.grid.length;
+    }
+
+    public int getHeight() {
+        return this.grid[0].length;
+    }
+
     public int[][] getGrid() {
         return grid;
     }

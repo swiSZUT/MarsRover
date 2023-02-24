@@ -10,8 +10,8 @@ public class Rover {
 
     public Rover(Landscape landscape, int startX, int startY, Orientation startOrientation) {
         this.landscape = landscape;
-        this.xPos = startX;
-        this.yPos = startY;
+        this.xPos = modulo(startX, this.landscape.getWidth());
+        this.yPos = modulo(startY, this.getLandscape().getHeight());
         this.orientation = startOrientation;
     }
 
@@ -30,4 +30,13 @@ public class Rover {
     public Orientation getOrientation() {
         return this.orientation;
     }
+
+    public void turnRight() {
+
+    }
+
+    private int modulo(int divident, int divisor) {
+        return (((divident % divisor) + divisor) % divisor);
+    }
+
 }
