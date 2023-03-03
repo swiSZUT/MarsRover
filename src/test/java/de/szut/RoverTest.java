@@ -116,4 +116,17 @@ public class RoverTest {
         return argumentsList.stream();
     }
 
+    @ParameterizedTest
+    @CsvSource({"50, mountain", "-30, chasm", "5, mountain", "-10, chasm"})
+    public void testForwardObstacle(int slope, String obstacleType) {
+        int startX = 50;
+        int startY = 50;
+        Rover rover = new Rover(mockLandscape, startX, startY, Orientation.SOUTH);
+        when(mockLandscape.getSlope(50, 51)).thenReturn(slope);
+        String obstacleMessage = rover.moveForward();
+        assertEquals("I encountered a " + obstacleType + " with slope " + slope + ". My current position is 50, 50.", obstacleMessage);
+        assertEquals(startX, rover.getX());
+        assertEquals(startY, rover.getY());
+    }
+
 }

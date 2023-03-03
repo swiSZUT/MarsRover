@@ -71,22 +71,22 @@ public class Rover {
         }
     }
 
-    public void moveForward() {
+    public String moveForward() {
         switch (this.orientation) {
             case NORTH:
-                this.yPos--;
-                break;
+                this.yPos = modulo(this.yPos - 1, landscape.getHeight());
+                return "";
             case EAST:
-                this.xPos++;
-                break;
+                this.xPos = modulo(this.xPos + 1, landscape.getWidth());
+                return "";
             case SOUTH:
-                this.yPos++;
-                break;
+                this.yPos = modulo(this.yPos + 1, landscape.getHeight());
+                return "";
             case WEST:
-                this.xPos--;
-                break;
+                this.xPos = modulo(this.xPos - 1, landscape.getWidth());
+                return "";
             default:
-                //Do nothing
+                return "";
         }
     }
 
