@@ -72,7 +72,22 @@ public class Rover {
     }
 
     public void moveForward() {
-
+        switch (this.orientation) {
+            case NORTH:
+                this.yPos--;
+                break;
+            case EAST:
+                this.xPos++;
+                break;
+            case SOUTH:
+                this.yPos++;
+                break;
+            case WEST:
+                this.xPos--;
+                break;
+            default:
+                //Do nothing
+        }
     }
 
     private int modulo(int divident, int divisor) {

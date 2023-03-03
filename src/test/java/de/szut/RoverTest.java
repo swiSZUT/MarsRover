@@ -95,4 +95,25 @@ public class RoverTest {
         return argumentsList.stream();
     }
 
+    @ParameterizedTest
+    @MethodSource("generateOrientationsAndPositionsForForwardAcrossEdge")
+    public void testForwardNoObstacleAcrossEdge(Orientation startOrientation, int startX, int startY,
+                                                int expectedX, int expectedY) {
+        Rover rover = new Rover(mockLandscape, startX, startY, startOrientation);
+        rover.moveForward();
+        assertEquals(expectedX, rover.getX());
+        assertEquals(expectedY, rover.getY());
+    }
+
+    private static Stream<Arguments> generateOrientationsAndPositionsForForwardAcrossEdge() {
+        List<Arguments> argumentsList = new ArrayList<>();
+
+        argumentsList.add(Arguments.of(Orientation.NORTH, 50, 0, 50, 99));
+        argumentsList.add(Arguments.of(Orientation.EAST, 99, 50, 0, 50));
+        argumentsList.add(Arguments.of(Orientation.SOUTH, 50, 99, 50, 0));
+        argumentsList.add(Arguments.of(Orientation.WEST, 0, 50, 99, 50));
+
+        return argumentsList.stream();
+    }
+
 }
