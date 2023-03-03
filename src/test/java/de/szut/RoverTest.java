@@ -28,8 +28,8 @@ public class RoverTest {
 
     @Test
     public void testInitialPlacementWithinBounds() {
-        int[][] mockGrid = new int [100][100];
-        when(mockLandscape.getGrid()).thenReturn(mockGrid);
+        when(mockLandscape.getWidth()).thenReturn(100);
+        when(mockLandscape.getHeight()).thenReturn(100);
         int startX = 20;
         int startY = 55;
         Orientation startOrientation = Orientation.NORTH;
@@ -57,6 +57,16 @@ public class RoverTest {
         when(mockLandscape.getHeight()).thenReturn(100);
         Rover rover = new Rover(mockLandscape, 50, 50, startOrientation);
         rover.turnRight();
+        assertEquals(endOrientation, rover.getOrientation());
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateOrientations")
+    public void testTurnLeft(Orientation endOrientation, Orientation startOrientation) {
+        when(mockLandscape.getWidth()).thenReturn(100);
+        when(mockLandscape.getHeight()).thenReturn(100);
+        Rover rover = new Rover(mockLandscape, 50, 50, startOrientation);
+        rover.turnLeft();
         assertEquals(endOrientation, rover.getOrientation());
     }
 

@@ -2,6 +2,8 @@ package de.szut;
 
 import de.szut.enums.Orientation;
 
+import static de.szut.enums.Orientation.*;
+
 public class Rover {
 
     private int xPos, yPos;
@@ -32,6 +34,25 @@ public class Rover {
     }
 
     public void turnRight() {
+        switch (this.orientation) {
+            case NORTH:
+                this.orientation = EAST;
+                break;
+            case EAST:
+                this.orientation = SOUTH;
+                break;
+            case SOUTH:
+                this.orientation = WEST;
+                break;
+            case WEST:
+                this.orientation = NORTH;
+                break;
+            default:
+                //Do nothing
+        }
+    }
+
+    public void turnLeft() {
 
     }
 
