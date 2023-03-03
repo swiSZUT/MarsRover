@@ -24,12 +24,12 @@ public class RoverTest {
     @BeforeEach
     public void setUp() {
         mockLandscape = mock(Landscape.class);
+        when(mockLandscape.getWidth()).thenReturn(100);
+        when(mockLandscape.getHeight()).thenReturn(100);
     }
 
     @Test
     public void testInitialPlacementWithinBounds() {
-        when(mockLandscape.getWidth()).thenReturn(100);
-        when(mockLandscape.getHeight()).thenReturn(100);
         int startX = 20;
         int startY = 55;
         Orientation startOrientation = Orientation.NORTH;
@@ -43,8 +43,6 @@ public class RoverTest {
     @ParameterizedTest
     @CsvSource({"120, 100, 20, 0", "-30, -123, 70, 77", "200, -150, 0, 50"})
     public void testInitialPlacementWrapsAround(int startX, int startY, int expectedX, int expectedY) {
-        when(mockLandscape.getWidth()).thenReturn(100);
-        when(mockLandscape.getHeight()).thenReturn(100);
         Rover rover = new Rover(mockLandscape, startX, startY, Orientation.SOUTH);
         assertEquals(expectedX, rover.getX());
         assertEquals(expectedY, rover.getY());
@@ -53,8 +51,6 @@ public class RoverTest {
     @ParameterizedTest
     @MethodSource("generateOrientations")
     public void testTurnRight(Orientation startOrientation, Orientation endOrientation) {
-        when(mockLandscape.getWidth()).thenReturn(100);
-        when(mockLandscape.getHeight()).thenReturn(100);
         Rover rover = new Rover(mockLandscape, 50, 50, startOrientation);
         rover.turnRight();
         assertEquals(endOrientation, rover.getOrientation());
@@ -63,8 +59,6 @@ public class RoverTest {
     @ParameterizedTest
     @MethodSource("generateOrientations")
     public void testTurnLeft(Orientation endOrientation, Orientation startOrientation) {
-        when(mockLandscape.getWidth()).thenReturn(100);
-        when(mockLandscape.getHeight()).thenReturn(100);
         Rover rover = new Rover(mockLandscape, 50, 50, startOrientation);
         rover.turnLeft();
         assertEquals(endOrientation, rover.getOrientation());
@@ -77,6 +71,26 @@ public class RoverTest {
         argumentsList.add(Arguments.of(Orientation.EAST, Orientation.SOUTH));
         argumentsList.add(Arguments.of(Orientation.SOUTH, Orientation.WEST));
         argumentsList.add(Arguments.of(Orientation.WEST, Orientation.NORTH));
+
+        return argumentsList.stream();
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateOrientationsAndPositionsForForward")
+    public void testForwardNoObstacle(Orientation startOrientation, int expectedX, int expectedY) {
+        Rover rover = new Rover(mockLandscape, 50, 50, startOrientation);
+        rover.moveForward();
+        assertEquals(expectedX, rover.getX());
+        assertEquals(expectedY, rover.getY());
+    }
+
+    private static Stream<Arguments> generateOrientationsAndPositionsForForward() {
+        List<Arguments> argumentsList = new ArrayList<>();
+
+        argumentsList.add(Arguments.of(Orientation.NORTH, 50, 49));
+        argumentsList.add(Arguments.of(Orientation.EAST, 51, 50));
+        argumentsList.add(Arguments.of(Orientation.SOUTH, 50, 51));
+        argumentsList.add(Arguments.of(Orientation.WEST, 49, 50));
 
         return argumentsList.stream();
     }
