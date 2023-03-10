@@ -74,20 +74,32 @@ public class Rover {
     public String moveForward() {
         switch (this.orientation) {
             case NORTH:
-                this.yPos = modulo(this.yPos - 1, landscape.getHeight());
-                return "";
+                return moveForwardInternal(xPos, modulo(this.yPos - 1, landscape.getHeight()));
             case EAST:
-                this.xPos = modulo(this.xPos + 1, landscape.getWidth());
-                return "";
+                return moveForwardInternal(modulo(this.xPos + 1, landscape.getWidth()), yPos);
             case SOUTH:
-                this.yPos = modulo(this.yPos + 1, landscape.getHeight());
-                return "";
+                return moveForwardInternal(xPos, modulo(this.yPos + 1, landscape.getHeight()));
             case WEST:
-                this.xPos = modulo(this.xPos - 1, landscape.getWidth());
-                return "";
+                return moveForwardInternal(modulo(this.xPos - 1, landscape.getWidth()), yPos);
             default:
                 return "";
         }
+
+    }
+
+    private String moveForwardInternal(int newX, int newY) {
+        int slope = landscape.getSlope(newX, newY);
+        if (slope == 0) {
+            xPos = newX;
+            yPos = newY;
+            return "I moved to " + xPos + ", " + yPos + ".";
+        } else {
+            return "I encountered a " + (slope > 0 ? "mountain":"chasm") + " with slope " + slope + ". My current position is " + xPos + ", " + yPos + ".";
+        }
+    }
+
+    public String moveBackward() {
+        return "";
     }
 
     private int modulo(int divident, int divisor) {

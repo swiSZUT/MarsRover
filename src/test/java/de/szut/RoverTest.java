@@ -129,4 +129,24 @@ public class RoverTest {
         assertEquals(startY, rover.getY());
     }
 
+    @ParameterizedTest
+    @MethodSource("generateOrientationsAndPositionsForBackward")
+    public void testBackwardNoObstacle(Orientation startOrientation, int expectedX, int expectedY) {
+        Rover rover = new Rover(mockLandscape, 50, 50, startOrientation);
+        rover.moveBackward();
+        assertEquals(expectedX, rover.getX());
+        assertEquals(expectedY, rover.getY());
+    }
+
+    private static Stream<Arguments> generateOrientationsAndPositionsForBackward() {
+        List<Arguments> argumentsList = new ArrayList<>();
+
+        argumentsList.add(Arguments.of(Orientation.NORTH, 50, 51));
+        argumentsList.add(Arguments.of(Orientation.EAST, 49, 50));
+        argumentsList.add(Arguments.of(Orientation.SOUTH, 50, 49));
+        argumentsList.add(Arguments.of(Orientation.WEST, 51, 50));
+
+        return argumentsList.stream();
+    }
+
 }
