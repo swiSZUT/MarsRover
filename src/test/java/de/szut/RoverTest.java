@@ -4,10 +4,7 @@ import de.szut.enums.Orientation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.*;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
@@ -147,6 +144,54 @@ public class RoverTest {
         argumentsList.add(Arguments.of(Orientation.WEST, 51, 50));
 
         return argumentsList.stream();
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateOrientationsAndPositionsForBackwardAcrossEdge")
+    public void testBackwardNoObstacleAcrossEdge(Orientation startOrientation, int startX, int startY,
+                                                int expectedX, int expectedY) {
+        Rover rover = new Rover(mockLandscape, startX, startY, startOrientation);
+        rover.moveBackward();
+        assertEquals(expectedX, rover.getX());
+        assertEquals(expectedY, rover.getY());
+    }
+
+    private static Stream<Arguments> generateOrientationsAndPositionsForBackwardAcrossEdge() {
+        List<Arguments> argumentsList = new ArrayList<>();
+
+        argumentsList.add(Arguments.of(Orientation.NORTH, 50, 99, 50, 0));
+        argumentsList.add(Arguments.of(Orientation.EAST, 0, 50, 99, 50));
+        argumentsList.add(Arguments.of(Orientation.SOUTH, 50, 0, 50, 99));
+        argumentsList.add(Arguments.of(Orientation.WEST, 99, 50, 0, 50));
+
+        return argumentsList.stream();
+    }
+
+    @ParameterizedTest
+    @CsvSource({"50, mountain", "-30, chasm", "5, mountain", "-10, chasm"})
+    public void testBackwardObstacle(int slope, String obstacleType) {
+        int startX = 50;
+        int startY = 50;
+        Rover rover = new Rover(mockLandscape, startX, startY, Orientation.SOUTH);
+        when(mockLandscape.getSlope(50, 49)).thenReturn(slope);
+        String obstacleMessage = rover.moveBackward();
+        assertEquals("I encountered a " + obstacleType + " with slope " + slope + ". My current position is 50, 50.", obstacleMessage);
+        assertEquals(startX, rover.getX());
+        assertEquals(startY, rover.getY());
+    }
+
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 15, 7})
+    public void testUpwardManageableSlope(int slope) {
+        int startX = 50;
+        int startY = 50;
+        int endX = startX + 1;
+        Rover rover = new Rover(mockLandscape, startX, startY, Orientation.EAST);
+        when(mockLandscape.getSlope(endX, startY)).thenReturn(slope);
+        rover.moveUpward();
+        assertEquals(endX, rover.getX());
+        assertEquals(startY, rover.getY());
     }
 
 }

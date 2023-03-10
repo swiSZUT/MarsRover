@@ -74,20 +74,20 @@ public class Rover {
     public String moveForward() {
         switch (this.orientation) {
             case NORTH:
-                return moveForwardInternal(xPos, modulo(this.yPos - 1, landscape.getHeight()));
+                return moveInternal(xPos, modulo(this.yPos - 1, landscape.getHeight()));
             case EAST:
-                return moveForwardInternal(modulo(this.xPos + 1, landscape.getWidth()), yPos);
+                return moveInternal(modulo(this.xPos + 1, landscape.getWidth()), yPos);
             case SOUTH:
-                return moveForwardInternal(xPos, modulo(this.yPos + 1, landscape.getHeight()));
+                return moveInternal(xPos, modulo(this.yPos + 1, landscape.getHeight()));
             case WEST:
-                return moveForwardInternal(modulo(this.xPos - 1, landscape.getWidth()), yPos);
+                return moveInternal(modulo(this.xPos - 1, landscape.getWidth()), yPos);
             default:
                 return "";
         }
 
     }
 
-    private String moveForwardInternal(int newX, int newY) {
+    private String moveInternal(int newX, int newY) {
         int slope = landscape.getSlope(newX, newY);
         if (slope == 0) {
             xPos = newX;
@@ -99,6 +99,21 @@ public class Rover {
     }
 
     public String moveBackward() {
+        switch (this.orientation) {
+            case NORTH:
+                return moveInternal(xPos, modulo(this.yPos + 1, landscape.getHeight()));
+            case EAST:
+                return moveInternal(modulo(this.xPos - 1, landscape.getWidth()), yPos);
+            case SOUTH:
+                return moveInternal(xPos, modulo(this.yPos - 1, landscape.getHeight()));
+            case WEST:
+                return moveInternal(modulo(this.xPos + 1, landscape.getWidth()), yPos);
+            default:
+                return "";
+        }
+    }
+
+    public String moveUpward() {
         return "";
     }
 
