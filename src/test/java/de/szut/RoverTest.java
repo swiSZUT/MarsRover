@@ -194,4 +194,45 @@ public class RoverTest {
         assertEquals(startY, rover.getY());
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {16, 100, 400})
+    public void testUpwardTooSteep(int slope) {
+        int startX = 50;
+        int startY = 50;
+        int endX = startX + 1;
+        Rover rover = new Rover(mockLandscape, startX, startY, Orientation.EAST);
+        when(mockLandscape.getSlope(endX, startY)).thenReturn(slope);
+        String obstacleMessage = rover.moveUpward();
+        assertEquals("I encountered a mountain with slope " + slope + ". My current position is 50, 50.", obstacleMessage);
+        assertEquals(startX, rover.getX());
+        assertEquals(startY, rover.getY());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, -5, -20})
+    public void testUpwardChasm(int slope) {
+        int startX = 50;
+        int startY = 50;
+        int endX = startX + 1;
+        Rover rover = new Rover(mockLandscape, startX, startY, Orientation.EAST);
+        when(mockLandscape.getSlope(endX, startY)).thenReturn(slope);
+        String obstacleMessage = rover.moveUpward();
+        assertEquals("I encountered a chasm with slope " + slope + ". My current position is 50, 50.", obstacleMessage);
+        assertEquals(startX, rover.getX());
+        assertEquals(startY, rover.getY());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-1, -15, -7})
+    public void testDownwardManageableSlope(int slope) {
+        int startX = 50;
+        int startY = 50;
+        int endX = startX + 1;
+        Rover rover = new Rover(mockLandscape, startX, startY, Orientation.EAST);
+        when(mockLandscape.getSlope(endX, startY)).thenReturn(slope);
+        rover.moveDownward();
+        assertEquals(endX, rover.getX());
+        assertEquals(startY, rover.getY());
+    }
+
 }

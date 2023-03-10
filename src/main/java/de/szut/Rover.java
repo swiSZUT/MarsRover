@@ -6,6 +6,8 @@ import static de.szut.enums.Orientation.*;
 
 public class Rover {
 
+    final private int maxManageableSlopeUp = 15;
+    final private int maxManageableSlopeDown = -15;
     private int xPos, yPos;
     private Orientation orientation;
     private Landscape landscape;
@@ -74,46 +76,63 @@ public class Rover {
     public String moveForward() {
         switch (this.orientation) {
             case NORTH:
-                return moveInternal(xPos, modulo(this.yPos - 1, landscape.getHeight()));
+                return moveInternal(xPos, modulo(this.yPos - 1, landscape.getHeight()), 0, 0);
             case EAST:
-                return moveInternal(modulo(this.xPos + 1, landscape.getWidth()), yPos);
+                return moveInternal(modulo(this.xPos + 1, landscape.getWidth()), yPos, 0, 0);
             case SOUTH:
-                return moveInternal(xPos, modulo(this.yPos + 1, landscape.getHeight()));
+                return moveInternal(xPos, modulo(this.yPos + 1, landscape.getHeight()), 0, 0);
             case WEST:
-                return moveInternal(modulo(this.xPos - 1, landscape.getWidth()), yPos);
+                return moveInternal(modulo(this.xPos - 1, landscape.getWidth()), yPos, 0, 0);
             default:
                 return "";
         }
 
     }
 
-    private String moveInternal(int newX, int newY) {
+    private String moveInternal(int newX, int newY, int minSlope, int maxSlope) {
         int slope = landscape.getSlope(newX, newY);
-        if (slope == 0) {
+        if (slope < minSlope) {
+            return "I encountered a chasm with slope " + slope + ". My current position is " + xPos + ", " + yPos + ".";
+        } else if (slope > maxSlope) {
+            return "I encountered a mountain with slope " + slope + ". My current position is " + xPos + ", " + yPos + ".";
+        } else {
             xPos = newX;
             yPos = newY;
             return "I moved to " + xPos + ", " + yPos + ".";
-        } else {
-            return "I encountered a " + (slope > 0 ? "mountain":"chasm") + " with slope " + slope + ". My current position is " + xPos + ", " + yPos + ".";
         }
     }
 
     public String moveBackward() {
         switch (this.orientation) {
             case NORTH:
-                return moveInternal(xPos, modulo(this.yPos + 1, landscape.getHeight()));
+                return moveInternal(xPos, modulo(this.yPos + 1, landscape.getHeight()), 0, 0);
             case EAST:
-                return moveInternal(modulo(this.xPos - 1, landscape.getWidth()), yPos);
+                return moveInternal(modulo(this.xPos - 1, landscape.getWidth()), yPos, 0, 0);
             case SOUTH:
-                return moveInternal(xPos, modulo(this.yPos - 1, landscape.getHeight()));
+                return moveInternal(xPos, modulo(this.yPos - 1, landscape.getHeight()), 0, 0);
             case WEST:
-                return moveInternal(modulo(this.xPos + 1, landscape.getWidth()), yPos);
+                return moveInternal(modulo(this.xPos + 1, landscape.getWidth()), yPos, 0, 0);
             default:
                 return "";
         }
     }
 
     public String moveUpward() {
+        switch (this.orientation) {
+            case NORTH:
+                return moveInternal(xPos, modulo(this.yPos - 1, landscape.getHeight()), 1, maxManageableSlopeUp);
+            case EAST:
+                return moveInternal(modulo(this.xPos + 1, landscape.getWidth()), yPos, 1, maxManageableSlopeUp);
+            case SOUTH:
+                return moveInternal(xPos, modulo(this.yPos + 1, landscape.getHeight()), 1, maxManageableSlopeUp);
+            case WEST:
+                return moveInternal(modulo(this.xPos - 1, landscape.getWidth()), yPos, 1, maxManageableSlopeUp);
+            default:
+                return "";
+        }
+    }
+
+    public String moveDownward() {
         return "";
     }
 
