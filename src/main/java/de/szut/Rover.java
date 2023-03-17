@@ -133,7 +133,22 @@ public class Rover {
     }
 
     public String moveDownward() {
-        return "";
+        switch (this.orientation) {
+            case NORTH:
+                return moveInternal(xPos, modulo(this.yPos - 1, landscape.getHeight()), maxManageableSlopeDown, -1);
+            case EAST:
+                return moveInternal(modulo(this.xPos + 1, landscape.getWidth()), yPos, maxManageableSlopeDown, -1);
+            case SOUTH:
+                return moveInternal(xPos, modulo(this.yPos + 1, landscape.getHeight()), maxManageableSlopeDown, -1);
+            case WEST:
+                return moveInternal(modulo(this.xPos - 1, landscape.getWidth()), yPos, maxManageableSlopeDown, -1);
+            default:
+                return "";
+        }
+    }
+
+    public void execute (String input) {
+        //Do something
     }
 
     private int modulo(int divident, int divisor) {

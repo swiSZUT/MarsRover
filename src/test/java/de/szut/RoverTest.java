@@ -235,4 +235,46 @@ public class RoverTest {
         assertEquals(startY, rover.getY());
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {-16, -100, -400})
+    public void testDownwardTooSteep(int slope) {
+        int startX = 50;
+        int startY = 50;
+        int endX = startX + 1;
+        Rover rover = new Rover(mockLandscape, startX, startY, Orientation.EAST);
+        when(mockLandscape.getSlope(endX, startY)).thenReturn(slope);
+        String obstacleMessage = rover.moveDownward();
+        assertEquals("I encountered a chasm with slope " + slope + ". My current position is 50, 50.", obstacleMessage);
+        assertEquals(startX, rover.getX());
+        assertEquals(startY, rover.getY());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 5, 20})
+    public void testDownwardMountain(int slope) {
+        int startX = 50;
+        int startY = 50;
+        int endX = startX + 1;
+        Rover rover = new Rover(mockLandscape, startX, startY, Orientation.EAST);
+        when(mockLandscape.getSlope(endX, startY)).thenReturn(slope);
+        String obstacleMessage = rover.moveDownward();
+        assertEquals("I encountered a mountain with slope " + slope + ". My current position is 50, 50.", obstacleMessage);
+        assertEquals(startX, rover.getX());
+        assertEquals(startY, rover.getY());
+    }
+
+    @ParameterizedTest
+    @CsvSource({"ff, 50, 52", "luf, 52, 50"})
+    public void testExecuteCommands(String input, int endX, int endY) {
+        //Positiv und negativ trennen?
+        int startX = 50;
+        int startY = 50;
+        Rover rover = new Rover(mockLandscape, startX, startY, Orientation.SOUTH);
+        //Landscape anpassen
+        when(mockLandscape.getSlope(51, 50)).thenReturn(10);
+        rover.execute(input);
+        assertEquals(endX, rover.getX());
+        assertEquals(endY, rover.getY());
+    }
+
 }
