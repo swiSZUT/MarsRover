@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RoverTest {
 
@@ -264,17 +265,37 @@ public class RoverTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"ff, 50, 52", "luf, 52, 50"})
+    @CsvSource({"ff, 50, 52", //
+    	"luf, 52, 50", //
+    	"lff, 50, 50", //
+    	"rff, 49, 50", //
+    	"rfd, 49, 50",//
+    	"luru, 51, 50", //
+    	"rrf, 50, 50", //
+    	"rrd, 50, 49", //
+    	"u, 50, 50", //
+    	"d, 50, 50", //
+    	"b, 50, 50", //
+    	"lb, 49, 50"})
     public void testExecuteCommands(String input, int endX, int endY) {
-        //Positiv und negativ trennen?
         int startX = 50;
         int startY = 50;
         Rover rover = new Rover(mockLandscape, startX, startY, Orientation.SOUTH);
         //Landscape anpassen
+        when(mockLandscape.getSlope(48, 50)).thenReturn(-18);
+        when(mockLandscape.getSlope(50, 49)).thenReturn(-7);
         when(mockLandscape.getSlope(51, 50)).thenReturn(10);
+        when(mockLandscape.getSlope(51, 51)).thenReturn(21);
         rover.execute(input);
         assertEquals(endX, rover.getX());
         assertEquals(endY, rover.getY());
+    }
+    
+    @Test
+    public void testExecuteIllegalCharacter() {
+        Rover rover = new Rover(mockLandscape, 50, 50, Orientation.SOUTH);
+    	Exception e = assertThrows(IllegalArgumentException.class, () -> rover.execute("ffx"));
+    	assertEquals("Only the characters 'frludb' are allowed.", e.getMessage());
     }
 
 }

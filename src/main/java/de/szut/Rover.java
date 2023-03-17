@@ -148,7 +148,31 @@ public class Rover {
     }
 
     public void execute (String input) {
-        //Do something
+    	for (int i = 0; i < input.length(); i++) {
+    		char c = input.charAt(i);
+    		switch(c) {
+    		case 'f':
+    			moveForward();
+    			break;
+    		case 'r':
+    			turnRight();
+    			break;
+    		case 'l':
+    			turnLeft();
+    			break;
+    		case 'u':
+    			moveUpward();
+    			break;
+    		case 'd':
+    			moveDownward();
+    			break;
+    		case 'b':
+    			moveBackward();
+    			break;
+    		default:
+    			break;
+    		}
+    	}
     }
 
     private int modulo(int divident, int divisor) {
