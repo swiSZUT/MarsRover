@@ -1,4 +1,4 @@
-CREATE TABLE public.game (
+CREATE TABLE IF NOT EXISTS public.game (
     gameId INTEGER PRIMARY KEY,
     rover_x INTEGER NOT NULL,
     rover_y INTEGER NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE public.game (
     height INTEGER NOT NULL
 );
 
-CREATE TABLE public.slopes (
+CREATE TABLE IF NOT EXISTS public.slopes (
     x INTEGER,
     y INTEGER,
     slope INTEGER,
