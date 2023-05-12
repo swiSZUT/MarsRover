@@ -12,6 +12,11 @@ Container erstellen und starten:
 docker run -d --name marsrover-db-container -p 5555:5432 marsrover-db-image
 ```
 
+Danach startbar via:
+```shell
+docker start marsrover-db-container
+```
+
 Container stoppen:
 ```shell
 docker stop marsrover-db-container 

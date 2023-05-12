@@ -170,7 +170,7 @@ public class Rover {
     			moveBackward();
     			break;
     		default:
-    			break;
+                throw new IllegalArgumentException("Only the characters 'frludb' are allowed.");
     		}
     	}
     }
